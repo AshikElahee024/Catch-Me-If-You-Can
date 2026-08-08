@@ -13,9 +13,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
+import com.example.myapplication.model.Player
+import com.example.myapplication.manager.GameManager
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val players = mutableListOf(
+            Player("Player 1"),
+            Player("Player 2"),
+            Player("Player 3"),
+            Player("Player 4"),
+        )
+
+        val gameManager = GameManager()
+        gameManager.assignRoles(players)
+
+        players.forEach {
+            println("${it.name} -> ${it.role}")
+        }
+
+
         enableEdgeToEdge()
         setContent {
             MyApplicationTheme {
