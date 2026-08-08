@@ -1,6 +1,5 @@
 package com.example.myapplication.screens.home
 
-package com.example.chorpolicedakatbabu
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
