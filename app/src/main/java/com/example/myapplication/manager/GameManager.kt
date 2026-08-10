@@ -2,6 +2,7 @@ package com.example.myapplication.manager
 
 import com.example.myapplication.model.Player
 import com.example.myapplication.model.Role
+import com.example.myapplication.model.GameState
 
 
 class GameManager {
@@ -14,4 +15,18 @@ class GameManager {
         }
     }
 
+    fun getCurrentPlayer(gameState : GameState) : Player {
+        return gameState.players[gameState.currentPlayerIndex]
+    }
+
+    fun moveToNextPlayer(gameState : GameState) : GameState{
+        return gameState.copy( // Replica with selective properties changed
+            currentPlayerIndex = gameState.currentPlayerIndex + 1,
+            roleRevealed = false
+        )
+    }
+
+    fun isLastPlayer(gameState: GameState) : Boolean {
+        return gameState.currentPlayerIndex == gameState.players.lastIndex
+    }
 }
