@@ -318,7 +318,7 @@ private fun PlayerNameField(
         value = playerName,
         onValueChange = onNameChange,
 
-        placeholder = {
+        label = {
             Text(
                 text = label,
                 color = GrayText,
@@ -343,7 +343,7 @@ private fun PlayerNameField(
 
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp),
+            .height(60.dp),
 
         shape = RoundedCornerShape(10.dp),
 
