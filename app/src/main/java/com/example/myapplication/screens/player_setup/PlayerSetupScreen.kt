@@ -47,7 +47,7 @@ import com.example.myapplication.model.Player
 
 // ---------- COLORS ----------
 
-private val BackgroundColor = Color(0xFF6E151f)
+private val BackgroundColor = Color(0xFF6E151F)
 private val CardColor = Color(0xFF160A21)
 private val FieldColor = Color(0xFF100719)
 private val YellowColor = Color(0xFFFFE000)
