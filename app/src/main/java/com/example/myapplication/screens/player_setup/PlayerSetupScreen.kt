@@ -117,7 +117,7 @@ fun PlayerSetupScreen(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = "King • Queen • Thief • Kingsguard",
+                text = "King • Queen • Thief • Knight",
                 color = GrayText,
                 fontSize = 12.sp
             )

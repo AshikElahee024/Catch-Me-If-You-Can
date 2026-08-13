@@ -4,39 +4,42 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.myapplication.Greeting
+import com.example.myapplication.R
 import com.example.myapplication.manager.GameManager
 import com.example.myapplication.model.GameState
 import com.example.myapplication.model.Player
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 
 private val BackgroundColor = Color(0xFF6E151F)
 private val CardColor = Color(0xFF160A21)
@@ -51,7 +54,7 @@ fun GameplayScreen() {
             Player("Ashik"),
             Player("Satu"),
             Player("Sami"),
-            Player("Dibbo")
+            Player("Wrivu")
         )
     }
 
@@ -67,6 +70,16 @@ fun GameplayScreen() {
     }
 
     val currentPlayer = gameManager.getCurrentPlayer(gameState)
+
+    var cardRotation = remember {
+        Animatable(0f)
+    }
+
+    var isAnimating by remember { // Prevents Multiple Click
+        mutableStateOf(false)
+    }
+
+    var scope = rememberCoroutineScope()
 
     Box(
         modifier = Modifier.fillMaxSize().background(BackgroundColor)
@@ -113,7 +126,8 @@ fun GameplayScreen() {
 
             roleRevealCard(
                 roleRevealed = gameState.roleRevealed,
-                roleName = currentPlayer.role?.name ?: "Unknown"
+                roleName = currentPlayer.role?.name ?: "Unknown",
+                rotation = cardRotation.value
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -121,8 +135,22 @@ fun GameplayScreen() {
             if(!gameState.roleRevealed){
                 Button(
                     onClick = {
-                        gameState = gameState.copy(roleRevealed = true)
+                        if(!isAnimating){
+                            scope.launch {
+                                isAnimating = true
+
+                                gameState = gameState.copy(roleRevealed = true)
+
+                                cardRotation.animateTo(
+                                    targetValue = 180f,
+                                    animationSpec = tween(700)
+                                )
+
+                                isAnimating = false
+                            }
+                        }
                     },
+                    enabled = !isAnimating,
                     modifier = Modifier.fillMaxWidth().height(50.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -131,7 +159,7 @@ fun GameplayScreen() {
                     )
                 ) {
                     Text(
-                        text = "TAP TO REVEAL ROLE",
+                        text = "REVEAL ROLE",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -152,10 +180,22 @@ fun GameplayScreen() {
             else{
                 Button(
                     onClick = {
-                        if (!gameManager.isLastPlayer(gameState)){
-                            gameState = gameManager.moveToNextPlayer(gameState)
+                        if (!isAnimating && !gameManager.isLastPlayer(gameState)){
+                            scope.launch {
+                                isAnimating = true
+
+                                cardRotation.animateTo(
+                                    targetValue = 0f,
+                                    animationSpec = tween(700)
+                                )
+
+                                gameState = gameManager.moveToNextPlayer(gameState)
+
+                                isAnimating = false
+                            }
                         }
                     },
+                    enabled = !isAnimating,
                     modifier = Modifier.fillMaxWidth().height(50.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -185,60 +225,65 @@ fun GameplayScreen() {
 }
 
 @Composable
-private fun roleRevealCard(roleRevealed : Boolean, roleName : String){
-    val cardModifier = Modifier.fillMaxWidth().height(300.dp).clip(RoundedCornerShape(22.dp)).background(CardColor).padding(20.dp)
-    if(!roleRevealed) {
-        Column(
-            modifier = cardModifier,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "SECRET",
-                color = WhiteText,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 2.sp
-            )
+private fun roleRevealCard(
+    roleRevealed: Boolean,
+    roleName: String,
+    rotation: Float
+) {
 
-            Spacer(modifier = Modifier.height(15.dp))
+    val cardImage = getRoleCard(roleName)
 
-            Text(
-                text = "ROLE",
-                color = WhiteText,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 2.sp
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(330.dp)
+            .graphicsLayer {
+                rotationY = rotation
+                cameraDistance = 12f * density
+            },
+        contentAlignment = Alignment.Center
+    ) {
+
+        if (rotation <= 90f) {
+
+            androidx.compose.foundation.Image(
+                painter = painterResource(
+                    id = R.drawable.card_back
+                ),
+                contentDescription = "Hidden role card",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(22.dp))
             )
         }
-    }
-    else{
-        Column(
-            modifier = cardModifier,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "YOUR ROLE",
-                color = YellowColor,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 2.sp
-            )
+        else {
+            androidx.compose.foundation.Image(
+                painter = painterResource(
+                    id = cardImage
+                ),
+                contentDescription = "Role card",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(22.dp))
+                    .graphicsLayer {
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text(
-                text = roleName.uppercase(),
-                color = YellowColor,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 2.sp
+                        rotationY = 180f
+                    }
             )
         }
     }
 }
 
+
+private fun getRoleCard(roleName : String) : Int{ // Int -> Reference ID to the Image
+    return when(roleName.uppercase()){ // Switch
+        "KING" -> R.drawable.king_card
+        "PRINCE" -> R.drawable.prince_card
+        "KNIGHT" -> R.drawable.knight_card
+        "THIEF" -> R.drawable.thief_card
+        else -> R.drawable.card_back
+    }
+}
 
 
 @Preview(
