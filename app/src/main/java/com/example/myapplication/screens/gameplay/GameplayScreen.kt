@@ -96,7 +96,7 @@ fun GameplayScreen() {
                     .fillMaxWidth()
                     .height(40.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .background(GrayText),
+                    .background(Color(0x00000000)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(

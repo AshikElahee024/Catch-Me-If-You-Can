@@ -7,7 +7,7 @@ import com.example.myapplication.model.GameState
 
 class GameManager {
     fun assignRoles(players: MutableList<Player>){
-        val roles = mutableListOf(Role.KING, Role.QUEEN, Role.THIEF, Role.POLICE)
+        val roles = mutableListOf(Role.KING, Role.PRINCE, Role.THIEF, Role.KNIGHT)
         roles.shuffle()
 
         for(i in players.indices){
