@@ -45,8 +45,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.myapplication.model.Player
 
 
-// ---------- COLORS ----------
-
 private val BackgroundColor = Color(0xFF6E151F)
 private val CardColor = Color(0xFF160A21)
 private val FieldColor = Color(0xFF100719)
@@ -55,8 +53,6 @@ private val PurpleBorder = Color(0xFF4B3457)
 private val WhiteText = Color(0xFFF5F0F7)
 private val GrayText = Color(0xFFB8AEBE)
 
-
-// ---------- SCREEN ----------
 
 @Composable
 fun PlayerSetupScreen(
@@ -85,9 +81,6 @@ fun PlayerSetupScreen(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            // ---------- CROWN ----------
-
             Box(
                 modifier = Modifier
                     .size(52.dp)
@@ -124,9 +117,6 @@ fun PlayerSetupScreen(
 
 
             Spacer(modifier = Modifier.height(40.dp))
-
-
-            // ---------- PLAYER CARD ----------
 
             Column(
                 modifier = Modifier
@@ -167,9 +157,6 @@ fun PlayerSetupScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-
-                // ---------- PLAYER 1 ----------
-
                 PlayerNameField(
                     playerName = player1,
                     onNameChange = { player1 = it },
@@ -177,9 +164,6 @@ fun PlayerSetupScreen(
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
-
-
-                // ---------- PLAYER 2 ----------
 
                 PlayerNameField(
                     playerName = player2,
@@ -189,9 +173,6 @@ fun PlayerSetupScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-
-                // ---------- PLAYER 3 ----------
-
                 PlayerNameField(
                     playerName = player3,
                     onNameChange = { player3 = it },
@@ -200,9 +181,6 @@ fun PlayerSetupScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-
-                // ---------- PLAYER 4 ----------
-
                 PlayerNameField(
                     playerName = player4,
                     onNameChange = { player4 = it },
@@ -210,13 +188,8 @@ fun PlayerSetupScreen(
                 )
             }
 
-
-            // Push buttons toward bottom
-
             Spacer(modifier = Modifier.weight(1f))
 
-
-            // ---------- START GAME ----------
 
             Button(
                 onClick = {
@@ -266,8 +239,6 @@ fun PlayerSetupScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Rules Button
-
             OutlinedButton(
                 onClick = {
 
@@ -304,9 +275,6 @@ fun PlayerSetupScreen(
     }
 }
 
-
-// ---------- PLAYER NAME FIELD ----------
-
 @Composable
 private fun PlayerNameField(
     playerName: String,
@@ -341,9 +309,7 @@ private fun PlayerNameField(
             imeAction = ImeAction.Next
         ),
 
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp),
+        modifier = Modifier.fillMaxWidth().height(60.dp),
 
         shape = RoundedCornerShape(10.dp),
 
