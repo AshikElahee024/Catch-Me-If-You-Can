@@ -4,14 +4,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.myapplication.ui.theme.MyApplicationTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.myapplication.screens.home.HomeScreen
+import com.example.myapplication.screens.home.BlankScreen
 
 import com.example.myapplication.model.Player
 import com.example.myapplication.manager.GameManager
@@ -20,31 +21,40 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MyApplicationTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Ashik",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            MyApplication()
         }
     }
 }
 
-
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun MyApplication() {
+    MaterialTheme {
+        Surface {
+            val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MyApplicationTheme {
-        Greeting("Ashik")
+            NavHost(navController = navController, startDestination = "home") {
+
+                composable("home") {
+                    HomeScreen(
+                        onPlayClick = { navController.navigate("play_blank") },
+                        onSettingsClick = { navController.navigate("settings_blank") }
+                    )
+                }
+
+                composable("play_blank") {
+                    BlankScreen(
+                        title = "Game Screen",
+                        onBack = { navController.popBackStack() }
+                    )
+                }
+
+                composable("settings_blank") {
+                    BlankScreen(
+                        title = "Settings Screen",
+                        onBack = { navController.popBackStack() }
+                    )
+                }
+            }
+        }
     }
 }
