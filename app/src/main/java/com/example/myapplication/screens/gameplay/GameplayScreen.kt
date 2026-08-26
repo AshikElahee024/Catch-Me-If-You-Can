@@ -48,15 +48,7 @@ private val PurpleBorder = Color(0xFF4B3457)
 private val WhiteText = Color(0xFFF5F0F7)
 private val GrayText = Color(0xFFB8AEBE)
 @Composable
-fun GameplayScreen() {
-    val players = remember {
-        mutableListOf<Player>(
-            Player("Ashik"),
-            Player("Satu"),
-            Player("Sami"),
-            Player("Wrivu")
-        )
-    }
+fun GameplayScreen(players : MutableList<Player>) {
 
     val gameManager = remember { GameManager() }
 
@@ -285,13 +277,3 @@ private fun getRoleCard(roleName : String) : Int{ // Int -> Reference ID to the 
     }
 }
 
-
-@Preview(
-    showBackground = true,
-    widthDp = 360,
-    heightDp = 800
-)
-@Composable
-fun GameplayScreenPreview(){
-    GameplayScreen()
-}
