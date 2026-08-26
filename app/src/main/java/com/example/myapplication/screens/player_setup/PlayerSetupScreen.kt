@@ -271,6 +271,8 @@ fun PlayerSetupScreen(
                     fontWeight = FontWeight.SemiBold
                 )
             }
+
+            Spacer(modifier = Modifier.height(40.dp))
         }
     }
 }
@@ -328,25 +330,5 @@ private fun PlayerNameField(
             focusedLeadingIconColor = YellowColor,
             unfocusedLeadingIconColor = YellowColor
         )
-    )
-}
-
-
-@Preview(
-    showBackground = true,
-    widthDp = 360,
-    heightDp = 800
-)
-@Composable
-fun PlayerSetupScreenPreview() {
-
-    PlayerSetupScreen(
-        onStartGame = { players ->
-            println("Players: ")
-
-            players.forEach {
-                println(it.name)
-            }
-        }
     )
 }
