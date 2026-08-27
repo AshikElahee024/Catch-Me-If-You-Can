@@ -265,7 +265,6 @@ private fun roleRevealCard(
                     .fillMaxSize()
                     .clip(RoundedCornerShape(22.dp))
                     .graphicsLayer {
-
                         rotationY = 180f
                     }
             )

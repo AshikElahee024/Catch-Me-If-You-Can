@@ -33,11 +33,10 @@ private val YellowColor = Color(0xFFFFE000)
 private val WhiteText = Color(0xFFF5F0F7)
 private val GrayText = Color(0xFFB8AEBE)
 
-
-
+var players = listOf<Player>()
 @Composable
 fun GuessingScreen(
-    players : MutableList<Player>,
+    players : List<Player>,
     onGuess : () -> Unit
 ){
     Box(
@@ -69,12 +68,65 @@ fun GuessingScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                GuessCard("Ashik")
 
+                GuessCard("Sami")
             }
 
+            Spacer(modifier = Modifier.height(35.dp))
 
+            GuessCard("Sami")
 
         }
 
     }
+}
+
+@Composable
+fun GuessCard(player : String){
+    Box(
+        modifier = Modifier
+            .width(150.dp)
+            .height(210.dp)
+            .clip(RoundedCornerShape(22.dp))
+            .background(CardColor)
+            .clickable {
+                // We will add the guessing logic later
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = player,
+                color = WhiteText,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(35.dp))
+
+            Text(
+                text = "TAP TO GUESS",
+                color = WhiteText,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    widthDp = 360,
+    heightDp = 800
+)
+@Composable
+fun GuessingScreenPreview(){
+    GuessingScreen(
+        players = players,
+        onGuess = {}
+    )
 }

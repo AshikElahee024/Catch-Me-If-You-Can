@@ -13,6 +13,8 @@ import androidx.compose.runtime.setValue
 import com.example.myapplication.model.Player
 import com.example.myapplication.screens.gameplay.GameplayScreen
 import com.example.myapplication.screens.player_setup.PlayerSetupScreen
+import com.example.myapplication.others.RulesScreen
+import com.example.myapplication.screens.guessing.GuessingScreen
 
 @Composable
 fun AppNavigation(){
@@ -43,6 +45,10 @@ fun AppNavigation(){
                 onStartGame = { newPlayers ->
                     players = newPlayers
                     navController.navigate("gameplay")
+                },
+
+                onRulesClick = {
+                    navController.navigate("rules")
                 }
             )
         }
@@ -66,8 +72,25 @@ fun AppNavigation(){
         }
 
         composable("guessing"){
+            GuessingScreen(
+                players = players,
+                onGuess = {
+                    navController.navigate("score")
+                }
+            )
+        }
+
+        composable("score"){
             BlankScreen(
-                title = "Guessing Screen",
+                title = "Score Screen",
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable("rules"){
+            RulesScreen(
                 onBack = {
                     navController.popBackStack()
                 }
