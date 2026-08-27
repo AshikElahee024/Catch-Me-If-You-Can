@@ -57,7 +57,21 @@ fun AppNavigation(){
         }
 
         composable("gameplay") {
-            GameplayScreen(players = players.toMutableList())
+            GameplayScreen(
+                players = players.toMutableList(),
+                onAllRoleRevealed = {
+                    navController.navigate("guessing")
+                }
+            )
+        }
+
+        composable("guessing"){
+            BlankScreen(
+                title = "Guessing Screen",
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
