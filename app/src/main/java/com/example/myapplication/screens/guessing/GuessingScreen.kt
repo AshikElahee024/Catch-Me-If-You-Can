@@ -85,7 +85,7 @@ fun GuessingScreen(
                 GuessCard(
                     player = guess[0],
                     isSelected = selectedPlayer == guess[0],
-                    guessFinished = guessingFinished,
+                    guessingFinished = guessingFinished,
                     onClick = {
                         if(!guessingFinished){
                             selectedPlayer = guess[0]
@@ -96,7 +96,7 @@ fun GuessingScreen(
                 GuessCard(
                     player = guess[1],
                     isSelected = selectedPlayer == guess[1],
-                    guessFinished = guessingFinished,
+                    guessingFinished = guessingFinished,
                     onClick = {
                         if(!guessingFinished){
                             selectedPlayer = guess[1]
@@ -110,7 +110,7 @@ fun GuessingScreen(
             GuessCard(
                 player = guess[2],
                 isSelected = selectedPlayer == guess[2],
-                guessFinished = guessingFinished,
+                guessingFinished = guessingFinished,
                 onClick = {
                     if(!guessingFinished){
                         selectedPlayer = guess[2]
@@ -126,7 +126,7 @@ fun GuessingScreen(
 fun GuessCard(
     player : Player,
     isSelected : Boolean,
-    guessFinished : Boolean,
+    guessingFinished : Boolean,
     onClick : () -> Unit
 ){
     Box(
@@ -136,7 +136,7 @@ fun GuessCard(
             .clip(RoundedCornerShape(22.dp))
             .background(CardColor)
             .clickable(
-                enabled = !guessFinished
+                enabled = !guessingFinished
             ) {
                 onClick()
             },

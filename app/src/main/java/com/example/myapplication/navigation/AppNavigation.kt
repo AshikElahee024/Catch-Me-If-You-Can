@@ -14,6 +14,7 @@ import com.example.myapplication.model.Player
 import com.example.myapplication.screens.gameplay.GameplayScreen
 import com.example.myapplication.screens.player_setup.PlayerSetupScreen
 import com.example.myapplication.others.RulesScreen
+import com.example.myapplication.others.SettingsScreen
 import com.example.myapplication.screens.guessing.GuessingScreen
 
 @Composable
@@ -54,10 +55,13 @@ fun AppNavigation(){
         }
 
         composable("settings"){
-            BlankScreen(
-                title = "Settings Screen",
+            SettingsScreen(
                 onBack = {
                     navController.popBackStack()
+                },
+
+                onRulesClick = {
+                    navController.navigate("rules")
                 }
             )
         }
