@@ -25,6 +25,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.example.myapplication.model.Player
 
 private val BackgroundColor = Color(0xFF6E151F)
@@ -39,6 +43,16 @@ fun GuessingScreen(
     players : List<Player>,
     onGuess : () -> Unit
 ){
+    val knight = players.find {it.role?.name == "KNIGHT"}
+
+    val guess = players.filter { it.role?.name != "KNIGHT" }
+
+    var selectedPlayer by remember {
+        mutableStateOf<Player?>(null)
+    }
+
+    val guessingFinished = selectedPlayer != null
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -68,30 +82,63 @@ fun GuessingScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                GuessCard("Ashik")
+                GuessCard(
+                    player = guess[0],
+                    isSelected = selectedPlayer == guess[0],
+                    guessFinished = guessingFinished,
+                    onClick = {
+                        if(!guessingFinished){
+                            selectedPlayer = guess[0]
+                        }
+                    }
+                )
 
-                GuessCard("Sami")
+                GuessCard(
+                    player = guess[1],
+                    isSelected = selectedPlayer == guess[1],
+                    guessFinished = guessingFinished,
+                    onClick = {
+                        if(!guessingFinished){
+                            selectedPlayer = guess[1]
+                        }
+                    }
+                )
             }
 
             Spacer(modifier = Modifier.height(35.dp))
 
-            GuessCard("Sami")
-
+            GuessCard(
+                player = guess[2],
+                isSelected = selectedPlayer == guess[2],
+                guessFinished = guessingFinished,
+                onClick = {
+                    if(!guessingFinished){
+                        selectedPlayer = guess[2]
+                    }
+                }
+            )
         }
 
     }
 }
 
 @Composable
-fun GuessCard(player : String){
+fun GuessCard(
+    player : Player,
+    isSelected : Boolean,
+    guessFinished : Boolean,
+    onClick : () -> Unit
+){
     Box(
         modifier = Modifier
             .width(150.dp)
             .height(210.dp)
             .clip(RoundedCornerShape(22.dp))
             .background(CardColor)
-            .clickable {
-                // We will add the guessing logic later
+            .clickable(
+                enabled = !guessFinished
+            ) {
+                onClick()
             },
         contentAlignment = Alignment.Center
     ) {
@@ -99,21 +146,52 @@ fun GuessCard(player : String){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = player,
-                color = WhiteText,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
-            )
+            if (isSelected) {
+                Text(
+                    text = player.name.uppercase(),
+                    color = WhiteText,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold
+                )
 
-            Spacer(modifier = Modifier.height(35.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
-            Text(
-                text = "TAP TO GUESS",
-                color = WhiteText,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
-            )
+                Text(
+                    text = "ROLE",
+                    color = YellowColor,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.sp
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = player.role?.name ?: "UNKNOWN",
+                    color = YellowColor,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+            } else {
+
+                Text(
+                    text = player.name.uppercase(),
+                    color = WhiteText,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Text(
+                    text = "TAP TO GUESS",
+                    color = YellowColor,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.sp
+                )
+            }
         }
     }
 }

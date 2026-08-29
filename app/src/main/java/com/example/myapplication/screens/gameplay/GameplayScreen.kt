@@ -50,7 +50,7 @@ private val GrayText = Color(0xFFB8AEBE)
 @Composable
 fun GameplayScreen(
     players : MutableList<Player>,
-    onAllRoleRevealed : () -> Unit
+    onAllRoleRevealed : (List<Player>) -> Unit
 ) {
 
     val gameManager = remember { GameManager() }
@@ -176,7 +176,7 @@ fun GameplayScreen(
                     onClick = {
                         if (!isAnimating){
                             if(gameManager.isLastPlayer(gameState)){
-                                onAllRoleRevealed()
+                                onAllRoleRevealed(players)
                             }
                             else{
                                 scope.launch {

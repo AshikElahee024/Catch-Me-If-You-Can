@@ -65,7 +65,8 @@ fun AppNavigation(){
         composable("gameplay") {
             GameplayScreen(
                 players = players.toMutableList(),
-                onAllRoleRevealed = {
+                onAllRoleRevealed = { gamePlayers ->
+                    players = gamePlayers
                     navController.navigate("guessing")
                 }
             )
