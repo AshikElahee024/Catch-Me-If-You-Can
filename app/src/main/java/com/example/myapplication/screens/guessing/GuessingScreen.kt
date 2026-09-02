@@ -25,6 +25,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.graphics.graphicsLayer
+import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,6 +55,16 @@ fun GuessingScreen(
     var selectedPlayer by remember {
         mutableStateOf<Player?>(null)
     }
+
+    var cardRotation = remember {
+        Animatable(0f)
+    }
+
+    var isAnimating by remember {
+        mutableStateOf(false)
+    }
+
+    var scope = rememberCoroutineScope()
 
     val guessingFinished = selectedPlayer != null
 
@@ -85,10 +100,27 @@ fun GuessingScreen(
                 GuessCard(
                     player = guess[0],
                     isSelected = selectedPlayer == guess[0],
+                    rotation = if(selectedPlayer == guess[0]){
+                        cardRotation.value
+                    } else{
+                        0f
+                    },
                     guessingFinished = guessingFinished,
+                    isAnimating = isAnimating,
                     onClick = {
-                        if(!guessingFinished){
-                            selectedPlayer = guess[0]
+                        if(!guessingFinished && !isAnimating){
+                            scope.launch {
+                                isAnimating = true
+
+                                selectedPlayer = guess[0]
+
+                                cardRotation.animateTo(
+                                    targetValue = 180f,
+                                    animationSpec = tween(700)
+                                )
+
+                                isAnimating = false
+                            }
                         }
                     }
                 )
@@ -96,10 +128,27 @@ fun GuessingScreen(
                 GuessCard(
                     player = guess[1],
                     isSelected = selectedPlayer == guess[1],
+                    rotation = if(selectedPlayer == guess[1]){
+                        cardRotation.value
+                    } else{
+                        0f
+                    },
                     guessingFinished = guessingFinished,
+                    isAnimating = isAnimating,
                     onClick = {
-                        if(!guessingFinished){
-                            selectedPlayer = guess[1]
+                        if(!guessingFinished && !isAnimating){
+                            scope.launch {
+                                isAnimating = true
+
+                                selectedPlayer = guess[1]
+
+                                cardRotation.animateTo(
+                                    targetValue = 180f,
+                                    animationSpec = tween(700)
+                                )
+
+                                isAnimating = false
+                            }
                         }
                     }
                 )
@@ -110,10 +159,27 @@ fun GuessingScreen(
             GuessCard(
                 player = guess[2],
                 isSelected = selectedPlayer == guess[2],
+                rotation = if(selectedPlayer == guess[2]){
+                    cardRotation.value
+                } else{
+                    0f
+                },
                 guessingFinished = guessingFinished,
+                isAnimating = isAnimating,
                 onClick = {
-                    if(!guessingFinished){
-                        selectedPlayer = guess[2]
+                    if(!guessingFinished && !isAnimating){
+                        scope.launch {
+                            isAnimating = true
+
+                            selectedPlayer = guess[2]
+
+                            cardRotation.animateTo(
+                                targetValue = 180f,
+                                animationSpec = tween(700)
+                            )
+
+                            isAnimating = false
+                        }
                     }
                 }
             )
@@ -123,30 +189,44 @@ fun GuessingScreen(
 }
 
 @Composable
-fun GuessCard(
-    player : Player,
-    isSelected : Boolean,
-    guessingFinished : Boolean,
-    onClick : () -> Unit
-){
+private fun GuessCard(
+    player: Player,
+    isSelected: Boolean,
+    rotation: Float,
+    guessingFinished: Boolean,
+    isAnimating: Boolean,
+    onClick: () -> Unit
+) {
+
     Box(
         modifier = Modifier
             .width(150.dp)
             .height(210.dp)
+            .graphicsLayer {
+                rotationY = rotation
+                cameraDistance = 12f * density
+            }
             .clip(RoundedCornerShape(22.dp))
             .background(CardColor)
             .clickable(
-                enabled = !guessingFinished
+                enabled = !guessingFinished && !isAnimating
             ) {
                 onClick()
             },
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            if (isSelected) {
+
+        if (isSelected && rotation > 90f) {
+
+            // Front side of the card
+            Column(
+                modifier = Modifier.graphicsLayer {
+                    rotationY = 180f
+                },
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+
                 Text(
                     text = player.name.uppercase(),
                     color = WhiteText,
@@ -160,8 +240,7 @@ fun GuessCard(
                     text = "ROLE",
                     color = YellowColor,
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.sp
+                    fontWeight = FontWeight.Bold
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -172,8 +251,15 @@ fun GuessCard(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
+            }
 
-            } else {
+        } else {
+
+            // Back side of the card
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
 
                 Text(
                     text = player.name.uppercase(),
