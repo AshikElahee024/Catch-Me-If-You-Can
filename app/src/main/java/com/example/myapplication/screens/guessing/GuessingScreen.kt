@@ -35,6 +35,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.myapplication.model.Player
+import com.example.myapplication.model.Role
 
 private val BackgroundColor = Color(0xFF6E151F)
 private val CardColor = Color(0xFF160A21)
@@ -56,8 +57,14 @@ fun GuessingScreen(
         mutableStateOf<Player?>(null)
     }
 
+    val isCorrectGuess = selectedPlayer?.role == Role.THIEF
+
     var cardRotation = remember {
         Animatable(0f)
+    }
+
+    var isGuessRevealed by remember {
+        mutableStateOf(false)
     }
 
     var isAnimating by remember {
@@ -66,7 +73,7 @@ fun GuessingScreen(
 
     var scope = rememberCoroutineScope()
 
-    val guessingFinished = selectedPlayer != null
+    val guessingFinished = isGuessRevealed
 
     Box(
         modifier = Modifier
@@ -108,7 +115,7 @@ fun GuessingScreen(
                     guessingFinished = guessingFinished,
                     isAnimating = isAnimating,
                     onClick = {
-                        if(!guessingFinished && !isAnimating){
+                        if(selectedPlayer == null && !isAnimating){
                             scope.launch {
                                 isAnimating = true
 
@@ -118,6 +125,8 @@ fun GuessingScreen(
                                     targetValue = 180f,
                                     animationSpec = tween(700)
                                 )
+
+                                isGuessRevealed = true
 
                                 isAnimating = false
                             }
@@ -136,7 +145,7 @@ fun GuessingScreen(
                     guessingFinished = guessingFinished,
                     isAnimating = isAnimating,
                     onClick = {
-                        if(!guessingFinished && !isAnimating){
+                        if(selectedPlayer == null && !isAnimating){
                             scope.launch {
                                 isAnimating = true
 
@@ -146,6 +155,8 @@ fun GuessingScreen(
                                     targetValue = 180f,
                                     animationSpec = tween(700)
                                 )
+
+                                isGuessRevealed = true
 
                                 isAnimating = false
                             }
@@ -167,7 +178,7 @@ fun GuessingScreen(
                 guessingFinished = guessingFinished,
                 isAnimating = isAnimating,
                 onClick = {
-                    if(!guessingFinished && !isAnimating){
+                    if(selectedPlayer == null && !isAnimating){
                         scope.launch {
                             isAnimating = true
 
@@ -178,11 +189,55 @@ fun GuessingScreen(
                                 animationSpec = tween(700)
                             )
 
+                            isGuessRevealed = true
+
                             isAnimating = false
                         }
                     }
                 }
             )
+
+            if (isGuessRevealed && selectedPlayer != null) {
+
+                Spacer(modifier = Modifier.height(30.dp))
+
+                if (isCorrectGuess) {
+
+                    Text(
+                        text = "CORRECT!",
+                        color = YellowColor,
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "YOU FOUND THE THIEF!",
+                        color = WhiteText,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                } else {
+
+                    Text(
+                        text = "WRONG!",
+                        color = WhiteText,
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "THE THIEF ESCAPED!",
+                        color = WhiteText,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
 
     }
@@ -218,7 +273,6 @@ private fun GuessCard(
 
         if (isSelected && rotation > 90f) {
 
-            // Front side of the card
             Column(
                 modifier = Modifier.graphicsLayer {
                     rotationY = 180f
@@ -255,7 +309,6 @@ private fun GuessCard(
 
         } else {
 
-            // Back side of the card
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
