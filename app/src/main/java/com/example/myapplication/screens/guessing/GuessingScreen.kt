@@ -49,7 +49,7 @@ var players = listOf<Player>()
 @Composable
 fun GuessingScreen(
     players : List<Player>,
-    onGuess : () -> Unit
+    onContinue : () -> Unit
 ){
     val knight = players.find {it.role?.name == "KNIGHT"}
 
@@ -201,7 +201,7 @@ fun GuessingScreen(
 
             if (isGuessRevealed && selectedPlayer != null) {
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 if (isCorrectGuess) {
 
@@ -241,23 +241,26 @@ fun GuessingScreen(
                 }
             }
 
-            Button(
-                onClick = {
-                    // We will connect this to ScoreScreen
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = YellowColor
-                )
-            ) {
-                Text(
-                    text = "CONTINUE",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
+            if (isGuessRevealed && selectedPlayer != null){
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Button(
+                    onClick = onContinue,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = YellowColor
+                    )
+                ) {
+                    Text(
+                        text = "CONTINUE",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
 
@@ -365,6 +368,6 @@ private fun GuessCard(
 fun GuessingScreenPreview(){
     GuessingScreen(
         players = players,
-        onGuess = {}
+        onContinue = {}
     )
 }

@@ -79,7 +79,7 @@ fun AppNavigation(){
         composable("guessing"){
             GuessingScreen(
                 players = players,
-                onGuess = {
+                onContinue = {
                     navController.navigate("score")
                 }
             )
