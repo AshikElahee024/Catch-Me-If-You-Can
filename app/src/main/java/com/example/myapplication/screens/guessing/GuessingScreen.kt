@@ -49,7 +49,7 @@ var players = listOf<Player>()
 @Composable
 fun GuessingScreen(
     players : List<Player>,
-    onContinue : () -> Unit
+    onContinue : (Boolean) -> Unit
 ){
     val knight = players.find {it.role?.name == "KNIGHT"}
 
@@ -246,7 +246,9 @@ fun GuessingScreen(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Button(
-                    onClick = onContinue,
+                    onClick = {
+                        onContinue(isCorrectGuess)
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),

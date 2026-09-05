@@ -16,6 +16,7 @@ import com.example.myapplication.screens.player_setup.PlayerSetupScreen
 import com.example.myapplication.others.RulesScreen
 import com.example.myapplication.others.SettingsScreen
 import com.example.myapplication.screens.guessing.GuessingScreen
+import com.example.myapplication.screens.score.ScoreScreen
 
 @Composable
 fun AppNavigation(){
@@ -23,6 +24,10 @@ fun AppNavigation(){
 
     var players by remember {
         mutableStateOf<List<Player>>(emptyList())
+    }
+
+    var isCorrectGuess by remember {
+        mutableStateOf(false)
     }
 
     NavHost(
@@ -79,18 +84,18 @@ fun AppNavigation(){
         composable("guessing"){
             GuessingScreen(
                 players = players,
-                onContinue = {
+                onContinue = { correctGuess ->
+                    isCorrectGuess = correctGuess
                     navController.navigate("score")
                 }
             )
         }
 
         composable("score"){
-            BlankScreen(
-                title = "Score Screen",
-                onBack = {
-                    navController.popBackStack()
-                }
+            ScoreScreen(
+                players = players,
+                isCorrectGuess = isCorrectGuess,
+                onPlayAgain = {}
             )
         }
 
