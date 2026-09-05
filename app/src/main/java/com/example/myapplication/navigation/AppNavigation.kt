@@ -17,6 +17,7 @@ import com.example.myapplication.others.RulesScreen
 import com.example.myapplication.others.SettingsScreen
 import com.example.myapplication.screens.guessing.GuessingScreen
 import com.example.myapplication.screens.score.ScoreScreen
+import com.example.myapplication.manager.GameManager
 
 @Composable
 fun AppNavigation(){
@@ -29,6 +30,8 @@ fun AppNavigation(){
     var isCorrectGuess by remember {
         mutableStateOf(false)
     }
+
+    val gameManager = remember { GameManager() }
 
     NavHost(
         navController = navController,
@@ -95,7 +98,11 @@ fun AppNavigation(){
             ScoreScreen(
                 players = players,
                 isCorrectGuess = isCorrectGuess,
-                onPlayAgain = {}
+                onPlayAgain = {
+                    gameManager.startNewRound(players)
+
+                    navController.navigate("gameplay")
+                }
             )
         }
 
