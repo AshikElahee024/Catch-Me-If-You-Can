@@ -26,7 +26,7 @@ fun AppNavigation() {
     val navController = rememberNavController()
 
     var gameSession by remember {
-        mutableStateOf<GameSession?>(null)
+        mutableStateOf(GameSession(players = emptyList()))
     }
 
     var isCorrectGuess by remember {
@@ -46,9 +46,7 @@ fun AppNavigation() {
         startDestination = "home"
     ) {
 
-        // HOME
         composable("home") {
-
             HomeScreen(
                 onPlayClick = {
                     navController.navigate("player_setup")
@@ -61,9 +59,7 @@ fun AppNavigation() {
         }
 
 
-        // PLAYER SETUP
         composable("player_setup") {
-
             PlayerSetupScreen(
                 onStartGame = { newPlayers ->
 
@@ -85,9 +81,7 @@ fun AppNavigation() {
         }
 
 
-        // SETTINGS
         composable("settings") {
-
             SettingsScreen(
                 onBack = {
                     navController.popBackStack()
@@ -99,18 +93,13 @@ fun AppNavigation() {
             )
         }
 
-
-        // GAMEPLAY
         composable("gameplay") {
-
-            gameSession?.let { session ->
-
                 GameplayScreen(
-                    players = session.players.toMutableList(),
+                    players = gameSession.players.toMutableList(),
 
                     onAllRoleRevealed = { gamePlayers ->
 
-                        gameSession = session.copy(
+                        gameSession = gameSession.copy(
                             players = gamePlayers
                         )
 
@@ -118,65 +107,52 @@ fun AppNavigation() {
                     }
                 )
             }
-        }
 
 
-        // GUESSING
         composable("guessing") {
-
-            gameSession?.let { session ->
-
                 GuessingScreen(
-                    players = session.players,
+                    players = gameSession.players,
 
                     onContinue = { correctGuess ->
 
                         isCorrectGuess = correctGuess
 
-                        // Calculate this round's scores
                         roundScores = gameManager.calculateScores(
-                            session.players,
+                            gameSession.players,
                             correctGuess
                         )
 
-                        // Add this round's scores
                         val newTotalScores =
                             gameManager.addRoundScores(
-                                session.totalScores,
+                                gameSession.totalScores,
                                 roundScores
                             )
 
-                        // Update GameSession
-                        gameSession = session.copy(
+                        gameSession = gameSession.copy(
                             totalScores = newTotalScores
                         )
 
                         navController.navigate("score")
                     }
                 )
-            }
         }
 
 
-        // SCORE
         composable("score") {
-
-            gameSession?.let { session ->
-
                 ScoreScreen(
-                    players = session.players,
+                    players = gameSession.players,
                     roundScores = roundScores,
-                    totalScores = session.totalScores,
+                    totalScores = gameSession.totalScores,
                     isCorrectGuess = isCorrectGuess,
 
                     onPlayAgain = {
 
                         gameManager.startNewRound(
-                            session.players
+                            gameSession.players
                         )
 
-                        gameSession = session.copy(
-                            currentRound = session.currentRound + 1
+                        gameSession = gameSession.copy(
+                            currentRound = gameSession.currentRound + 1
                         )
 
                         navController.navigate("gameplay") {
@@ -184,13 +160,10 @@ fun AppNavigation() {
                         }
                     }
                 )
-            }
         }
 
 
-        // RULES
         composable("rules") {
-
             RulesScreen(
                 onBack = {
                     navController.popBackStack()
