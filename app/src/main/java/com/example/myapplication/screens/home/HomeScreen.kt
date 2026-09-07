@@ -1,7 +1,11 @@
 package com.example.myapplication.screens.home
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 
 
 import androidx.compose.foundation.Canvas
+import com.example.myapplication.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -49,12 +53,7 @@ fun HomeScreen(
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.radialGradient(colors = listOf(BgVignette, BgMid, BgDark)))
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(BgDark.copy(alpha = 0.35f), Color.Transparent, BgDark.copy(alpha = 0.5f))
-                )
-            )
+            .background(BgVignette)
     ) {
         val screenHeight = maxHeight
 
@@ -73,17 +72,14 @@ fun HomeScreen(
             )
         }
 
-        Text(
-            text = "THE HIDDEN\nTHIEF",
-            color = TitleGold,
-            fontSize = 32.sp,
-            fontWeight = FontWeight.ExtraBold,
-            textAlign = TextAlign.Center,
-            lineHeight = 38.sp,
+        androidx.compose.foundation.Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Catch Me If You Can logo",
+            contentScale = ContentScale.Fit,
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = screenHeight * 0.20f)
-                .fillMaxWidth()
+                .padding(top = screenHeight * 0.17f)
+                .fillMaxWidth(0.95f)
         )
 
         PlayButton(
