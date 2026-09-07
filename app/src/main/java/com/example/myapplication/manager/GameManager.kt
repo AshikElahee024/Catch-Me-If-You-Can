@@ -33,4 +33,34 @@ class GameManager {
     fun startNewRound(players: List<Player>) {
         assignRoles(players.toMutableList())
     }
+
+    fun calculateScores( players: List<Player>, isCorrectGuess: Boolean ): Map<String, Int> {
+        return players.associate { player ->
+
+            val score = when (player.role) {
+
+                Role.KING -> 100
+
+                Role.PRINCE -> 80
+
+                Role.KNIGHT -> {
+                    if (isCorrectGuess) 90 else 0
+                }
+
+                Role.THIEF -> {
+                    if (isCorrectGuess) 0 else 90
+                }
+
+                else -> 0
+            }
+
+            player.name to score
+        }
+    }
+
+    fun addRoundScores(totalScores: Map<String, Int>, roundScores: Map<String, Int>): Map<String, Int> {
+        return roundScores.mapValues { (playerName, roundScore) ->
+            (totalScores[playerName] ?: 0) + roundScore
+        }
+    }
 }
