@@ -52,6 +52,8 @@ private val GrayText = Color(0xFFB8AEBE)
 @Composable
 fun ScoreScreen(
     players: List<Player>,
+    roundScores: Map<String, Int>,
+    totalScores: Map<String, Int>,
     isCorrectGuess: Boolean,
     onPlayAgain: () -> Unit
 ) {
@@ -74,7 +76,10 @@ fun ScoreScreen(
         Spacer(modifier = Modifier.height(30.dp))
 
         Text(
-            text = if (isCorrectGuess) "CORRECT GUESS!" else "WRONG GUESS!",
+            text = if (isCorrectGuess)
+                "CORRECT GUESS!"
+            else
+                "WRONG GUESS!",
             color = YellowColor,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
@@ -82,24 +87,25 @@ fun ScoreScreen(
 
         Spacer(modifier = Modifier.height(30.dp))
 
+
         players.forEach { player ->
 
-            val score = calculateScore(
-                player = player,
-                isCorrectGuess = isCorrectGuess
-            )
+            val roundScore = roundScores[player.name] ?: 0
+            val totalScore = totalScores[player.name] ?: 0
 
             Text(
-                text = "${player.name}    $score",
+                text = "${player.name}    Round: $roundScore    Total: $totalScore",
                 color = WhiteText,
-                fontSize = 22.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
 
             Spacer(modifier = Modifier.height(15.dp))
         }
 
+
         Spacer(modifier = Modifier.weight(1f))
+
 
         Button(
             onClick = onPlayAgain,
@@ -113,28 +119,5 @@ fun ScoreScreen(
                 fontWeight = FontWeight.Bold
             )
         }
-    }
-}
-
-private fun calculateScore(
-    player: Player,
-    isCorrectGuess: Boolean
-): Int {
-
-    return when (player.role) {
-
-        Role.KING -> 100
-
-        Role.PRINCE -> 80
-
-        Role.KNIGHT -> {
-            if (isCorrectGuess) 90 else 0
-        }
-
-        Role.THIEF -> {
-            if (isCorrectGuess) 0 else 90
-        }
-
-        else -> 0
     }
 }
