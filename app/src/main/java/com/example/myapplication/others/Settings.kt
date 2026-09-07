@@ -1,7 +1,5 @@
 package com.example.myapplication.others
 
-
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -20,6 +18,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Vibration
+import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Slider
@@ -49,11 +53,11 @@ private val TitleGold = Color(0xFFF3A93E)
 private val GoldLight = Color(0xFFFCE8A6)
 private val GoldMid = Color(0xFFE7A93B)
 private val GoldDark = Color(0xFFA9691A)
-private val CardBg = Color(0x47000000)
+private val CardBg = Color(0x3DFFFFFF)
+private val CardBorder = Color(0x33E7A93B)
 private val HeadingText = Color(0xFFFCE8A6)
 private val SubText = Color(0xFFC89A6A)
 private val PlayText = Color(0xFF3A0A0A)
-private val DangerText = Color(0xFFD4537E)
 
 @Composable
 fun SettingsScreen(
@@ -95,71 +99,79 @@ fun SettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 90.dp, start = 20.dp, end = 20.dp, bottom = 20.dp)
+                .padding(top = 96.dp, start = 20.dp, end = 20.dp, bottom = 24.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             SectionLabel("Sound")
+
+            var musicOn by remember { mutableStateOf(true) }
+            var musicVolume by remember { mutableFloatStateOf(0.7f) }
             SettingsCard {
-                var musicOn by remember { mutableStateOf(true) }
-                var musicVolume by remember { mutableFloatStateOf(0.7f) }
-                var sfxOn by remember { mutableStateOf(true) }
-                var sfxVolume by remember { mutableFloatStateOf(0.85f) }
-
-                ToggleRow(label = "Background Music", checked = musicOn, onCheckedChange = { musicOn = it })
-                GoldSlider(value = musicVolume, onValueChange = { musicVolume = it })
-
-                Spacer(modifier = Modifier.height(16.dp))
-                Divider()
-                Spacer(modifier = Modifier.height(16.dp))
-
-                ToggleRow(label = "Sound Effects", checked = sfxOn, onCheckedChange = { sfxOn = it })
-                GoldSlider(value = sfxVolume, onValueChange = { sfxVolume = it })
+                IconRow(
+                    icon = Icons.Filled.MusicNote,
+                    label = "Background Music",
+                    trailing = {
+                        GoldSwitch(checked = musicOn, onCheckedChange = { musicOn = it })
+                    }
+                )
+                if (musicOn) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    GoldSlider(value = musicVolume, onValueChange = { musicVolume = it })
+                }
             }
 
-            SectionLabel("Gameplay")
-            SettingsCard {
-                var vibrationOn by remember { mutableStateOf(false) }
-                var timerOn by remember { mutableStateOf(true) }
+            Spacer(modifier = Modifier.height(12.dp))
 
-                ToggleRow(
+            var sfxOn by remember { mutableStateOf(true) }
+            var sfxVolume by remember { mutableFloatStateOf(0.85f) }
+            SettingsCard {
+                IconRow(
+                    icon = Icons.Filled.VolumeUp,
+                    label = "Sound Effects",
+                    trailing = {
+                        GoldSwitch(checked = sfxOn, onCheckedChange = { sfxOn = it })
+                    }
+                )
+                if (sfxOn) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    GoldSlider(value = sfxVolume, onValueChange = { sfxVolume = it })
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+            SectionLabel("Gameplay")
+
+            var vibrationOn by remember { mutableStateOf(false) }
+            SettingsCard {
+                IconRow(
+                    icon = Icons.Filled.Vibration,
                     label = "Vibration",
                     subLabel = "Buzz on role reveal & guess result",
-                    checked = vibrationOn,
-                    onCheckedChange = { vibrationOn = it }
+                    trailing = {
+                        GoldSwitch(checked = vibrationOn, onCheckedChange = { vibrationOn = it })
+                    }
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+            SectionLabel("Help & About")
+
+            SettingsCard {
+                NavRow(
+                    icon = Icons.Filled.MenuBook,
+                    label = "How to Play",
+                    onClick = onRulesClick
+                )
+                Spacer(modifier = Modifier.height(12.dp))
                 Divider()
-                Spacer(modifier = Modifier.height(16.dp))
-                ToggleRow(
-                    label = "Round Timer",
-                    subLabel = "Auto-move to next round after guess",
-                    checked = timerOn,
-                    onCheckedChange = { timerOn = it }
+                Spacer(modifier = Modifier.height(12.dp))
+                IconRow(
+                    icon = Icons.Filled.Info,
+                    label = "Version",
+                    trailing = {
+                        Text(text = "1.0.0", color = GoldMid, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                    }
                 )
-            }
-
-            SectionLabel("Language")
-            SettingsCard {
-                var isBangla by remember { mutableStateOf(true) }
-                LanguageSegmented(isBangla = isBangla, onChange = { isBangla = it })
-            }
-
-            SectionLabel("Players")
-            ActionCard(text = "Edit Player Names", onClick = { })
-            ActionCard(text = "Reset Scoreboard", onClick = { }, danger = true)
-
-            SectionLabel("Help")
-            ActionCard(text = "How to Play", onClick = onRulesClick)
-
-            SectionLabel("About")
-            SettingsCard {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
-                ) {
-                    Text(text = "Version", color = SubText, fontSize = 12.sp)
-                    Text(text = "1.0.0", color = GoldMid, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                }
             }
         }
     }
@@ -172,8 +184,8 @@ private fun SectionLabel(text: String) {
         color = GoldMid,
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
-        letterSpacing = 1.sp,
-        modifier = Modifier.padding(start = 4.dp, bottom = 10.dp, top = 4.dp)
+        letterSpacing = 1.2.sp,
+        modifier = Modifier.padding(start = 4.dp, bottom = 10.dp)
     )
 }
 
@@ -182,67 +194,86 @@ private fun SettingsCard(content: @Composable () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 12.dp)
-            .clip(RoundedCornerShape(14.dp))
+            .clip(RoundedCornerShape(18.dp))
             .background(CardBg)
-            .padding(14.dp)
+            .padding(16.dp)
     ) {
         content()
     }
 }
 
 @Composable
-private fun ActionCard(text: String, onClick: () -> Unit, danger: Boolean = false) {
+private fun IconBadge(icon: androidx.compose.ui.graphics.vector.ImageVector) {
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 12.dp)
-            .clip(RoundedCornerShape(14.dp))
-            .background(CardBg)
-            .clickable(onClick = onClick)
-            .padding(vertical = 12.dp),
+            .size(38.dp)
+            .clip(CircleShape)
+            .background(Brush.verticalGradient(listOf(GoldMid.copy(alpha = 0.28f), GoldDark.copy(alpha = 0.18f)))),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = text,
-            color = if (danger) DangerText else HeadingText,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Bold
-        )
+        Icon(imageVector = icon, contentDescription = null, tint = GoldLight, modifier = Modifier.size(19.dp))
     }
 }
 
 @Composable
-private fun ToggleRow(
+private fun IconRow(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
     label: String,
     subLabel: String? = null,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    trailing: @Composable () -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Column {
+        IconBadge(icon)
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(modifier = Modifier.weight(1f)) {
             Text(text = label, color = HeadingText, fontSize = 14.sp, fontWeight = FontWeight.Bold)
             if (subLabel != null) {
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(text = subLabel, color = SubText, fontSize = 11.sp)
             }
         }
-        Switch(
-            checked = checked,
-            onCheckedChange = onCheckedChange,
-            colors = SwitchDefaults.colors(
-                checkedThumbColor = PlayText,
-                checkedTrackColor = GoldMid,
-                checkedBorderColor = GoldDark,
-                uncheckedThumbColor = GoldLight,
-                uncheckedTrackColor = Color.Black.copy(alpha = 0.35f),
-                uncheckedBorderColor = GoldDark
-            )
-        )
+        Spacer(modifier = Modifier.width(8.dp))
+        trailing()
     }
+}
+
+@Composable
+private fun NavRow(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .clickable(onClick = onClick),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconBadge(icon)
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(text = label, color = HeadingText, fontSize = 14.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+        Icon(imageVector = Icons.Filled.ChevronRight, contentDescription = null, tint = SubText, modifier = Modifier.size(20.dp))
+    }
+}
+
+@Composable
+private fun GoldSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    Switch(
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+        colors = SwitchDefaults.colors(
+            checkedThumbColor = PlayText,
+            checkedTrackColor = GoldMid,
+            checkedBorderColor = GoldDark,
+            uncheckedThumbColor = GoldLight,
+            uncheckedTrackColor = Color.Black.copy(alpha = 0.35f),
+            uncheckedBorderColor = GoldDark
+        )
+    )
 }
 
 @Composable
@@ -253,53 +284,12 @@ private fun GoldSlider(value: Float, onValueChange: (Float) -> Unit) {
         colors = SliderDefaults.colors(
             thumbColor = GoldLight,
             activeTrackColor = GoldMid,
-            inactiveTrackColor = Color.Black.copy(alpha = 0.35f)
+            inactiveTrackColor = Color.Black.copy(alpha = 0.3f)
         ),
-        modifier = Modifier.fillMaxWidth()
-    )
-}
-
-@Composable
-private fun LanguageSegmented(isBangla: Boolean, onChange: (Boolean) -> Unit) {
-    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
-    ) {
-        SegmentButton(
-            text = "\u09AC\u09BE\u0982\u09B2\u09BE",
-            active = isBangla,
-            modifier = Modifier.weight(1f),
-            onClick = { onChange(true) }
-        )
-        SegmentButton(
-            text = "English",
-            active = !isBangla,
-            modifier = Modifier.weight(1f),
-            onClick = { onChange(false) }
-        )
-    }
-}
-
-@Composable
-private fun SegmentButton(text: String, active: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Box(
-        modifier = modifier
-            .background(
-                if (active) Brush.verticalGradient(listOf(GoldMid, GoldDark))
-                else Brush.verticalGradient(listOf(Color.Transparent, Color.Transparent))
-            )
-            .clickable(onClick = onClick)
-            .padding(vertical = 10.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            color = if (active) PlayText else SubText,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold
-        )
-    }
+            .padding(start = 50.dp)
+    )
 }
 
 @Composable
@@ -308,6 +298,6 @@ private fun Divider() {
         modifier = Modifier
             .fillMaxWidth()
             .height(1.dp)
-            .background(GoldDark.copy(alpha = 0.35f))
+            .background(CardBorder)
     )
 }
