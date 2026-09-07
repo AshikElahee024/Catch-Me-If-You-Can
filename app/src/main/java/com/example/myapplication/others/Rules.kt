@@ -100,13 +100,13 @@ fun RulesScreen(onBack: () -> Unit) {
                     lineHeight = 18.sp
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                RolePointRow("King (Babu)", KingColor, "100")
+                RolePointRow("King", KingColor, "100")
                 Spacer(modifier = Modifier.height(6.dp))
-                RolePointRow("Knight (Police)", KnightColor, "90")
+                RolePointRow("Knight", KnightColor, "90")
                 Spacer(modifier = Modifier.height(6.dp))
-                RolePointRow("Prince (Dakat)", PrinceColor, "75")
+                RolePointRow("Prince", PrinceColor, "80")
                 Spacer(modifier = Modifier.height(6.dp))
-                RolePointRow("Thief (Chor)", ThiefColor, "0")
+                RolePointRow("Thief", ThiefColor, "0")
             }
 
             RuleCard(number = "2", title = "Reveal") {
@@ -120,7 +120,7 @@ fun RulesScreen(onBack: () -> Unit) {
 
             RuleCard(number = "3", title = "Knight Guesses") {
                 Text(
-                    text = "The Knight (Police) must guess which of the remaining players is the Thief (Chor).",
+                    text = "The Knight must guess which of the remaining players is the Thief.",
                     color = BodyText,
                     fontSize = 13.sp,
                     lineHeight = 18.sp
@@ -144,9 +144,9 @@ fun RulesScreen(onBack: () -> Unit) {
                     letterSpacing = 0.5.sp
                 )
                 Spacer(modifier = Modifier.height(6.dp))
-                ScoreRow("King (Babu)", KingColor, "+100")
+                ScoreRow("King", KingColor, "+100")
                 Spacer(modifier = Modifier.height(8.dp))
-                ScoreRow("Prince (Dakat)", PrinceColor, "+75")
+                ScoreRow("Prince", PrinceColor, "+80")
 
                 Spacer(modifier = Modifier.height(14.dp))
                 Text(
@@ -157,9 +157,9 @@ fun RulesScreen(onBack: () -> Unit) {
                     letterSpacing = 0.5.sp
                 )
                 Spacer(modifier = Modifier.height(6.dp))
-                ScoreRow("Knight (Police)", KnightColor, "+90")
+                ScoreRow("Knight", KnightColor, "+90")
                 Spacer(modifier = Modifier.height(8.dp))
-                ScoreRow("Thief (Chor)", ThiefColor, "+0", valueColor = Color(0xFF8A8A8A))
+                ScoreRow("Thief", ThiefColor, "+0", valueColor = Color(0xFF8A8A8A))
 
                 Spacer(modifier = Modifier.height(14.dp))
                 Text(
@@ -170,9 +170,9 @@ fun RulesScreen(onBack: () -> Unit) {
                     letterSpacing = 0.5.sp
                 )
                 Spacer(modifier = Modifier.height(6.dp))
-                ScoreRow("Knight (Police)", KnightColor, "+0", valueColor = Color(0xFF8A8A8A))
+                ScoreRow("Knight", KnightColor, "+0", valueColor = Color(0xFF8A8A8A))
                 Spacer(modifier = Modifier.height(8.dp))
-                ScoreRow("Thief (Chor)", ThiefColor, "+90")
+                ScoreRow("Thief", ThiefColor, "+90")
             }
 
             WinningConditionsCard()
@@ -287,7 +287,7 @@ private fun WinningConditionsCard() {
         }
         Spacer(modifier = Modifier.height(10.dp))
         Column(modifier = Modifier.padding(start = 36.dp)) {
-            BulletLine("The player who reaches 1,000 total points first wins the game.")
+            BulletLine("After completing 7 rounds, the player with the highest score will be the winner.")
             Spacer(modifier = Modifier.height(6.dp))
             BulletLine("If the game is ended early, the player with the highest total score wins.")
         }
