@@ -56,7 +56,8 @@ private val GrayText = Color(0xFFB8AEBE)
 
 @Composable
 fun PlayerSetupScreen(
-    onStartGame: (List<Player>) -> Unit
+    onStartGame: (List<Player>) -> Unit,
+    onRulesClick: () -> Unit
 ) {
 
     var player1 by remember { mutableStateOf("") }
@@ -241,7 +242,7 @@ fun PlayerSetupScreen(
 
             OutlinedButton(
                 onClick = {
-
+                    onRulesClick()
                 },
                 modifier = Modifier
                     .fillMaxWidth()

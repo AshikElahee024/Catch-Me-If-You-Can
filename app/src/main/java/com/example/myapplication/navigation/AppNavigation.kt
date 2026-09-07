@@ -13,6 +13,11 @@ import androidx.compose.runtime.setValue
 import com.example.myapplication.model.Player
 import com.example.myapplication.screens.gameplay.GameplayScreen
 import com.example.myapplication.screens.player_setup.PlayerSetupScreen
+import com.example.myapplication.others.RulesScreen
+import com.example.myapplication.others.SettingsScreen
+import com.example.myapplication.screens.guessing.GuessingScreen
+import com.example.myapplication.screens.score.ScoreScreen
+import com.example.myapplication.manager.GameManager
 
 @Composable
 fun AppNavigation(){
@@ -21,6 +26,12 @@ fun AppNavigation(){
     var players by remember {
         mutableStateOf<List<Player>>(emptyList())
     }
+
+    var isCorrectGuess by remember {
+        mutableStateOf(false)
+    }
+
+    val gameManager = remember { GameManager() }
 
     NavHost(
         navController = navController,
@@ -43,21 +54,64 @@ fun AppNavigation(){
                 onStartGame = { newPlayers ->
                     players = newPlayers
                     navController.navigate("gameplay")
+                },
+
+                onRulesClick = {
+                    navController.navigate("rules")
                 }
             )
         }
 
         composable("settings"){
-            BlankScreen(
-                title = "Settings Screen",
+            SettingsScreen(
                 onBack = {
                     navController.popBackStack()
+                },
+
+                onRulesClick = {
+                    navController.navigate("rules")
                 }
             )
         }
 
         composable("gameplay") {
-            GameplayScreen(players = players.toMutableList())
+            GameplayScreen(
+                players = players.toMutableList(),
+                onAllRoleRevealed = { gamePlayers ->
+                    players = gamePlayers
+                    navController.navigate("guessing")
+                }
+            )
+        }
+
+        composable("guessing"){
+            GuessingScreen(
+                players = players,
+                onContinue = { correctGuess ->
+                    isCorrectGuess = correctGuess
+                    navController.navigate("score")
+                }
+            )
+        }
+
+        composable("score"){
+            ScoreScreen(
+                players = players,
+                isCorrectGuess = isCorrectGuess,
+                onPlayAgain = {
+                    gameManager.startNewRound(players)
+
+                    navController.navigate("gameplay")
+                }
+            )
+        }
+
+        composable("rules"){
+            RulesScreen(
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

@@ -29,4 +29,8 @@ class GameManager {
     fun isLastPlayer(gameState: GameState) : Boolean {
         return gameState.currentPlayerIndex == gameState.players.lastIndex
     }
+
+    fun startNewRound(players: List<Player>) {
+        assignRoles(players.toMutableList())
+    }
 }

@@ -48,17 +48,19 @@ private val PurpleBorder = Color(0xFF4B3457)
 private val WhiteText = Color(0xFFF5F0F7)
 private val GrayText = Color(0xFFB8AEBE)
 @Composable
-fun GameplayScreen(players : MutableList<Player>) {
+fun GameplayScreen(
+    players : MutableList<Player>,
+    onAllRoleRevealed : (List<Player>) -> Unit
+) {
 
     val gameManager = remember { GameManager() }
 
-    remember {
-        gameManager.assignRoles(players)
-        true
-    }
-
     var gameState by remember {
-        mutableStateOf(GameState(players = players))
+        gameManager.assignRoles(players)
+
+        mutableStateOf(
+            GameState(players = players)
+        )
     }
 
     val currentPlayer = gameManager.getCurrentPlayer(gameState)
@@ -172,18 +174,23 @@ fun GameplayScreen(players : MutableList<Player>) {
             else{
                 Button(
                     onClick = {
-                        if (!isAnimating && !gameManager.isLastPlayer(gameState)){
-                            scope.launch {
-                                isAnimating = true
+                        if (!isAnimating){
+                            if(gameManager.isLastPlayer(gameState)){
+                                onAllRoleRevealed(players)
+                            }
+                            else{
+                                scope.launch {
+                                    isAnimating = true
 
-                                cardRotation.animateTo(
-                                    targetValue = 0f,
-                                    animationSpec = tween(700)
-                                )
+                                    cardRotation.animateTo(
+                                        targetValue = 0f,
+                                        animationSpec = tween(700)
+                                    )
 
-                                gameState = gameManager.moveToNextPlayer(gameState)
+                                    gameState = gameManager.moveToNextPlayer(gameState)
 
-                                isAnimating = false
+                                    isAnimating = false
+                                }
                             }
                         }
                     },
@@ -258,7 +265,6 @@ private fun roleRevealCard(
                     .fillMaxSize()
                     .clip(RoundedCornerShape(22.dp))
                     .graphicsLayer {
-
                         rotationY = 180f
                     }
             )
