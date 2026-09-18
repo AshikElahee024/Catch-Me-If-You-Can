@@ -143,6 +143,7 @@ fun AppNavigation() {
                     players = gameSession.players,
                     roundScores = roundScores,
                     totalScores = gameSession.totalScores,
+                    currentRound = gameSession.currentRound,
                     isCorrectGuess = isCorrectGuess,
 
                     onPlayAgain = {
