@@ -56,19 +56,6 @@ fun ScoreScreen(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        // TITLE
-        Text(
-            text = "THE HIDDEN THIEF",
-            color = YellowColor,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = 1.sp
-        )
-
-        Spacer(modifier = Modifier.height(18.dp))
-
-        // ROUND
         Text(
             text = "ROUND $currentRound RESULTS",
             color = WhiteText,
@@ -76,9 +63,8 @@ fun ScoreScreen(
             fontWeight = FontWeight.Bold
         )
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
-        // GUESS RESULT
         Text(
             text = if (isCorrectGuess)
                 "✓  CORRECT GUESS!"
@@ -99,10 +85,8 @@ fun ScoreScreen(
             fontWeight = FontWeight.Medium
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
-
-        // PLAYER SCORE CARDS
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -121,11 +105,8 @@ fun ScoreScreen(
             }
         }
 
-
         Spacer(modifier = Modifier.weight(1f))
 
-
-        // NEXT ROUND BUTTON
         Button(
             onClick = onPlayAgain,
             modifier = Modifier
@@ -144,6 +125,8 @@ fun ScoreScreen(
                 fontWeight = FontWeight.Bold
             )
         }
+
+        Spacer(modifier = Modifier.height(5.dp))
     }
 }
 
@@ -168,7 +151,6 @@ private fun ScoreCard(
                 .padding(16.dp)
         ) {
 
-            // PLAYER NAME + ROLE
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -177,7 +159,7 @@ private fun ScoreCard(
                 Text(
                     text = player.name.uppercase(),
                     color = WhiteText,
-                    fontSize = 19.sp,
+                    fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
                 )
@@ -190,10 +172,8 @@ private fun ScoreCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-
-            // SCORES
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -206,7 +186,7 @@ private fun ScoreCard(
                     Text(
                         text = "ROUND SCORE",
                         color = GrayText,
-                        fontSize = 11.sp,
+                        fontSize = 10.sp,
                         fontWeight = FontWeight.Bold
                     )
 
@@ -215,7 +195,7 @@ private fun ScoreCard(
                     Text(
                         text = "$roundScore",
                         color = WhiteText,
-                        fontSize = 21.sp,
+                        fontSize = 15.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -228,7 +208,7 @@ private fun ScoreCard(
                     Text(
                         text = "TOTAL SCORE",
                         color = GrayText,
-                        fontSize = 11.sp,
+                        fontSize = 10.sp,
                         fontWeight = FontWeight.Bold
                     )
 
@@ -237,7 +217,7 @@ private fun ScoreCard(
                     Text(
                         text = "$totalScore",
                         color = YellowColor,
-                        fontSize = 24.sp,
+                        fontSize = 15.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
