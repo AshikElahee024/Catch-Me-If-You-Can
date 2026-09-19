@@ -34,6 +34,8 @@ private val WhiteText = Color(0xFFF5F0F7)
 private val GrayText = Color(0xFFB8AEBE)
 private val PurpleBorder = Color(0xFF4B3457)
 
+
+private const val TOTAL_ROUNDS = 10
 @Composable
 fun ScoreScreen(
     players: List<Player>,
@@ -43,6 +45,7 @@ fun ScoreScreen(
     isCorrectGuess: Boolean,
     onPlayAgain: () -> Unit
 ) {
+    val isFinalRound = currentRound == TOTAL_ROUNDS
 
     Column(
         modifier = Modifier
@@ -57,33 +60,55 @@ fun ScoreScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "ROUND $currentRound RESULTS",
+            text = if (isFinalRound)
+                "FINAL RESULTS"
+            else
+                "ROUND $currentRound RESULTS",
             color = WhiteText,
-            fontSize = 28.sp,
+            fontSize = 25.sp,
             fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Text(
-            text = if (isCorrectGuess)
-                "✓  CORRECT GUESS!"
-            else
-                "✕  WRONG GUESS!",
-            color = YellowColor,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
+        if (!isFinalRound) {
 
-        Text(
-            text = if (isCorrectGuess)
-                "The thief was found!"
-            else
-                "The thief escaped!",
-            color = GrayText,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.Medium
-        )
+            Text(
+                text = if (isCorrectGuess)
+                    "✓  CORRECT GUESS!"
+                else
+                    "✕  WRONG GUESS!",
+                color = YellowColor,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = if (isCorrectGuess)
+                    "The thief was found!"
+                else
+                    "The thief escaped!",
+                color = GrayText,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Medium
+            )
+
+        } else {
+
+            Text(
+                text = "10 ROUNDS COMPLETE!",
+                color = YellowColor,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = "Final scores are in!",
+                color = GrayText,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Medium
+            )
+        }
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -107,21 +132,33 @@ fun ScoreScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Button(
-            onClick = onPlayAgain,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(52.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = YellowColor,
-                contentColor = CardColor
-            )
-        ) {
+        if (!isFinalRound) {
+
+            Button(
+                onClick = onPlayAgain,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = YellowColor,
+                    contentColor = CardColor
+                )
+            ) {
+
+                Text(
+                    text = "NEXT ROUND",
+                    fontSize = 19.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+        } else {
 
             Text(
-                text = "NEXT ROUND",
-                fontSize = 19.sp,
+                text = "GAME OVER",
+                color = YellowColor,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
         }
