@@ -22,6 +22,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.myapplication.model.Player
@@ -35,7 +37,7 @@ private val GrayText = Color(0xFFB8AEBE)
 private val PurpleBorder = Color(0xFF4B3457)
 
 
-private const val TOTAL_ROUNDS = 10
+private const val TOTAL_ROUNDS = 5
 @Composable
 fun ScoreScreen(
     players: List<Player>,
@@ -51,6 +53,7 @@ fun ScoreScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(BackgroundColor)
+            .verticalScroll(rememberScrollState())
             .padding(
                 start = 20.dp,
                 end = 20.dp,
@@ -130,7 +133,25 @@ fun ScoreScreen(
             }
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+        if (isFinalRound) {
+
+            val winner = getWinner(
+                players = players,
+                totalScores = totalScores
+            )
+
+            if (winner != null) {
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                WinnerCard(
+                    winner = winner,
+                    totalScore = totalScores[winner.name] ?: 0
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
 
         if (!isFinalRound) {
 
@@ -259,6 +280,62 @@ private fun ScoreCard(
                     )
                 }
             }
+        }
+    }
+}
+
+private fun getWinner(
+    players: List<Player>,
+    totalScores: Map<String, Int>
+): Player? {
+    return players.maxByOrNull { player ->
+        totalScores[player.name] ?: 0
+    }
+}
+
+@Composable
+private fun WinnerCard(
+    winner: Player,
+    totalScore: Int
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(20.dp))
+            .background(CardColor)
+            .padding(20.dp)
+    ) {
+
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                text = "WINNER",
+                color = YellowColor,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 2.sp
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            Text(
+                text = winner.name.uppercase(),
+                color = WhiteText,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            Text(
+                text = "$totalScore POINTS",
+                color = YellowColor,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
