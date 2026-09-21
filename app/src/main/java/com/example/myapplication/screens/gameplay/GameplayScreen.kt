@@ -41,7 +41,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 
-private val BackgroundColor = Color(0xFF6E151F)
+private val BackgroundColor = Color(0xFF6E1418)
 private val CardColor = Color(0xFF160A21)
 private val YellowColor = Color(0xFFFFE000)
 private val PurpleBorder = Color(0xFF4B3457)

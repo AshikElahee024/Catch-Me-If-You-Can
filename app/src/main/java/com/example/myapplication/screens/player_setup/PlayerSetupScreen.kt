@@ -45,7 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.myapplication.model.Player
 
 
-private val BackgroundColor = Color(0xFF6E151F)
+private val BackgroundColor = Color(0xFF6E1418)
 private val CardColor = Color(0xFF160A21)
 private val FieldColor = Color(0xFF100719)
 private val YellowColor = Color(0xFFFFE000)

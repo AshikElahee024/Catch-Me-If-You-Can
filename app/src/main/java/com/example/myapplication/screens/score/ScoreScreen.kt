@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.example.myapplication.model.Player
 import com.example.myapplication.model.Role
 
-private val BackgroundColor = Color(0xFF6E151F)
+private val BackgroundColor = Color(0xFF6E1418)
 private val CardColor = Color(0xFF160A21)
 private val YellowColor = Color(0xFFFFE000)
 private val WhiteText = Color(0xFFF5F0F7)
