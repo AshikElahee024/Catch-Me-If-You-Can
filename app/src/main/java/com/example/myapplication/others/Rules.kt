@@ -287,7 +287,7 @@ private fun WinningConditionsCard() {
         }
         Spacer(modifier = Modifier.height(10.dp))
         Column(modifier = Modifier.padding(start = 36.dp)) {
-            BulletLine("After completing 7 rounds, the player with the highest score will be the winner.")
+            BulletLine("After completing 10 rounds, the player with the highest score will be the winner.")
             Spacer(modifier = Modifier.height(6.dp))
             BulletLine("If the game is ended early, the player with the highest total score wins.")
         }
