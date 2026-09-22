@@ -98,10 +98,8 @@ fun PlayerSetupScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
 
-            // ---------- TITLE ----------
-
             Text(
-                text = "THE HIDDEN THIEF",
+                text = "CATCH ME IF YOU CAN",
                 color = YellowColor,
                 fontSize = 21.sp,
                 fontWeight = FontWeight.Bold,
@@ -131,8 +129,6 @@ fun PlayerSetupScreen(
                         bottom = 18.dp
                     )
             ) {
-
-                // Card title
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically
