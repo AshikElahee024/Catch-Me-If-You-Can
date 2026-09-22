@@ -146,7 +146,7 @@ fun AppNavigation() {
                     currentRound = gameSession.currentRound,
                     isCorrectGuess = isCorrectGuess,
 
-                    onPlayAgain = {
+                    onNextRound = {
 
                         gameManager.startNewRound(
                             gameSession.players
@@ -159,10 +159,12 @@ fun AppNavigation() {
                         navController.navigate("gameplay") {
                             popUpTo("player_setup")
                         }
+                    },
+                    onPlayAgain = {
+                        navController.navigate("home")
                     }
                 )
         }
-
 
         composable("rules") {
             RulesScreen(

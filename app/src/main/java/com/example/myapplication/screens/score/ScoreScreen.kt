@@ -45,6 +45,7 @@ fun ScoreScreen(
     totalScores: Map<String, Int>,
     currentRound: Int,
     isCorrectGuess: Boolean,
+    onNextRound: () -> Unit,
     onPlayAgain: () -> Unit
 ) {
     val isFinalRound = currentRound == TOTAL_ROUNDS
@@ -156,7 +157,7 @@ fun ScoreScreen(
         if (!isFinalRound) {
 
             Button(
-                onClick = onPlayAgain,
+                onClick = onNextRound,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),
@@ -182,6 +183,27 @@ fun ScoreScreen(
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            Button(
+                onClick = onPlayAgain,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = YellowColor,
+                    contentColor = CardColor
+                )
+            ) {
+
+                Text(
+                    text = "PLAY AGAIN",
+                    fontSize = 19.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(5.dp))

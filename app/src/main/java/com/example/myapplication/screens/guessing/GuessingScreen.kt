@@ -95,7 +95,7 @@ fun GuessingScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "WHO IS THE THIEF?",
+                text = "${knight?.name}, WHO IS THE THIEF?",
                 color = WhiteText,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold
