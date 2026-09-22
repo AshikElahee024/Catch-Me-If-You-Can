@@ -71,6 +71,18 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxSize()
             )
         }
+        Text(
+            text = "CATCH ME IF YOU CAN",
+            color = TitleGold,
+            fontSize = 28.sp,
+            fontWeight = FontWeight.ExtraBold,
+            letterSpacing = 1.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = screenHeight * 0.13f)
+                .fillMaxWidth()
+        )
 
         androidx.compose.foundation.Image(
             painter = painterResource(id = R.drawable.logo),
@@ -78,7 +90,7 @@ fun HomeScreen(
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = screenHeight * 0.17f)
+                .padding(top = screenHeight * 0.23f)
                 .fillMaxWidth(0.95f)
         )
 
