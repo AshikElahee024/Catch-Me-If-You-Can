@@ -36,16 +36,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.painterResource
+import com.example.myapplication.R
 import com.example.myapplication.model.Player
 import com.example.myapplication.model.Role
 
-private val BackgroundColor = Color(0xFF6E151F)
+private val BackgroundColor = Color(0xFF6E1418)
 private val CardColor = Color(0xFF160A21)
 private val YellowColor = Color(0xFFFFE000)
 private val WhiteText = Color(0xFFF5F0F7)
 private val GrayText = Color(0xFFB8AEBE)
 
-var players = listOf<Player>()
 @Composable
 fun GuessingScreen(
     players : List<Player>,
@@ -94,7 +95,7 @@ fun GuessingScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "WHO IS THE THIEF?",
+                text = "${knight?.name}, WHO IS THE THIEF?",
                 color = WhiteText,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold
@@ -279,6 +280,8 @@ private fun GuessCard(
     onClick: () -> Unit
 ) {
 
+    val cardImage = getRoleCard(player.role?.name ?: "Unknown")
+
     Box(
         modifier = Modifier
             .width(150.dp)
@@ -299,39 +302,17 @@ private fun GuessCard(
 
         if (isSelected && rotation > 90f) {
 
-            Column(
-                modifier = Modifier.graphicsLayer {
-                    rotationY = 180f
-                },
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-
-                Text(
-                    text = player.name.uppercase(),
-                    color = WhiteText,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Text(
-                    text = "ROLE",
-                    color = YellowColor,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = player.role?.name ?: "UNKNOWN",
-                    color = YellowColor,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+            androidx.compose.foundation.Image(
+                painter = painterResource(
+                    id = cardImage
+                ),
+                contentDescription = "Role card",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        rotationY = 180f
+                    }
+            )
 
         } else {
 
@@ -361,15 +342,16 @@ private fun GuessCard(
     }
 }
 
-@Preview(
-    showBackground = true,
-    widthDp = 360,
-    heightDp = 800
-)
-@Composable
-fun GuessingScreenPreview(){
-    GuessingScreen(
-        players = players,
-        onContinue = {}
-    )
+private fun getRoleCard(roleName : String) : Int{ // Int -> Reference ID to the Image
+    return when(roleName.uppercase()){ // Switch
+        "KING" -> R.drawable.king_card
+        "PRINCE" -> R.drawable.prince_card
+        "KNIGHT" -> R.drawable.knight_card
+        "THIEF" -> R.drawable.thief_card
+        else -> R.drawable.card_back
+    }
 }
+
+/*
+
+ */
