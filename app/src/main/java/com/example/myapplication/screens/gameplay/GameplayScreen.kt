@@ -267,10 +267,10 @@ private fun roleRevealCard(
 
 private fun getRoleCard(roleName : String) : Int{ // Int -> Reference ID to the Image
     return when(roleName.uppercase()){ // Switch
-        "KING" -> R.drawable.king_card
-        "PRINCE" -> R.drawable.prince_card
-        "KNIGHT" -> R.drawable.knight_card
-        "THIEF" -> R.drawable.thief_card
+        "KING" -> R.drawable.king
+        "PRINCE" -> R.drawable.prince
+        "KNIGHT" -> R.drawable.knight
+        "THIEF" -> R.drawable.thief
         else -> R.drawable.card_back
     }
 }

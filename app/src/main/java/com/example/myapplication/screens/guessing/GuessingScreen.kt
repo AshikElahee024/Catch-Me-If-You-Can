@@ -290,7 +290,7 @@ private fun GuessCard(
                 rotationY = rotation
                 cameraDistance = 12f * density
             }
-            .clip(RoundedCornerShape(22.dp))
+
             .background(CardColor)
             .clickable(
                 enabled = !guessingFinished && !isAnimating
@@ -322,7 +322,7 @@ private fun GuessCard(
             ) {
 
                 Text(
-                    text = player.name.uppercase(),
+                    text = player.name,
                     color = WhiteText,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold
@@ -344,14 +344,10 @@ private fun GuessCard(
 
 private fun getRoleCard(roleName : String) : Int{ // Int -> Reference ID to the Image
     return when(roleName.uppercase()){ // Switch
-        "KING" -> R.drawable.king_card
-        "PRINCE" -> R.drawable.prince_card
-        "KNIGHT" -> R.drawable.knight_card
-        "THIEF" -> R.drawable.thief_card
+        "KING" -> R.drawable.king
+        "PRINCE" -> R.drawable.prince
+        "KNIGHT" -> R.drawable.knight
+        "THIEF" -> R.drawable.thief
         else -> R.drawable.card_back
     }
 }
-
-/*
-
- */

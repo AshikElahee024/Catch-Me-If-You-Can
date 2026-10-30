@@ -37,7 +37,7 @@ private val GrayText = Color(0xFFB8AEBE)
 private val PurpleBorder = Color(0xFF4B3457)
 
 
-private const val TOTAL_ROUNDS = 5
+private const val TOTAL_ROUNDS = 10
 @Composable
 fun ScoreScreen(
     players: List<Player>,
@@ -237,7 +237,7 @@ private fun ScoreCard(
             ) {
 
                 Text(
-                    text = player.name.uppercase(),
+                    text = player.name,
                     color = WhiteText,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
