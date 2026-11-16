@@ -69,7 +69,7 @@ fun GameplayScreen(
         Animatable(0f)
     }
 
-    var isAnimating by remember { // Prevents Multiple Click
+    var isAnimating by remember {
         mutableStateOf(false)
     }
 
@@ -164,6 +164,14 @@ fun GameplayScreen(
             }
 
             else{
+                Text(
+                    text = "YOUR ROLE IS ${currentPlayer.role?.name ?: "Unknown"}",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
                 Button(
                     onClick = {
                         if (!isAnimating){
