@@ -10,7 +10,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.myapplication"
+        applicationId = "com.ashik.catchmeifyoucan"
         minSdk = 24
         targetSdk = 37
         versionCode = 1
